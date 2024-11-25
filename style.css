@@ -1,0 +1,13 @@
+body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+table, th{
+    text-align: left;
+    border: 1px solid darkred;
+}
+
+th > span{
+    font-size: 2rem;
+    cursor: pointer;
+}
