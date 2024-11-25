@@ -70,7 +70,31 @@ const createTable = productData => {
     const tableBodyElement = document.createElement('tbody');
 
     const headers = Object.keys(productData[0]);
-    tableHeadElement.appendChild(createHeaderRows(headers));
+    tableHeadElement.appendChild(createHeaderRow(headers));
+
+    tableElement.appendChild(tableHeadElement);
+
+    return tableElement;
+};
+
+const createHeaderRow = columnNames => {
+    const tr = document.createElement('tr');
+    columnNames.forEach( columnName => {
+        const th = document.createElement('th');
+        th.textContent = columnName[0].toUpperCase() + columnName.slice(1);
+
+        const searchUp = document.createElement('span');
+        searchUp.textContent = '🔼';
+        const searchDown = document.createElement('span');
+        searchDown.textContent = '🔽';
+
+        th.appendChild(searchDown);
+        th.appendChild(searchUp);
+
+        tr.appendChild(th);
+    });
+
+    return tr;
 }
 
 const renderTable = productData => {
@@ -78,3 +102,5 @@ const renderTable = productData => {
     sortableTableElement.innerHTML = '';
     sortableTableElement.appendChild(createTable(productData));
 }
+
+renderTable(data);
