@@ -24,7 +24,7 @@ const data = [
         id: 4,
         title: 'iPhone Mini',
         price: 45999,
-        inStock: true,
+        inStock: false,
         Category: 'Smartphones',
     },
     {
@@ -36,16 +36,16 @@ const data = [
     },
     {
         id: 6,
-        title: 'Samsung Galaxy s14',
+        title: 'Dell XPS 14',
         price: 168399,
         inStock: true,
-        Category: 'Smartphones',
+        Category: 'laptops',
     },
     {
         id: 7,
         title: 'Samsung Galaxy Note 12',
         price: 90899,
-        inStock: true,
+        inStock: false,
         Category: 'Smartphones',
     },
     {
@@ -57,10 +57,10 @@ const data = [
     },
     {
         id: 9,
-        title: 'Google pixel 8a',
-        price: 56999,
+        title: 'HP Pavilion 15',
+        price: 156999,
         inStock: true,
-        Category: 'Smartphones',
+        Category: 'laptops',
     },
 ]
 
@@ -72,21 +72,31 @@ const createTable = productData => {
     const headers = Object.keys(productData[0]);
     tableHeadElement.appendChild(createHeaderRow(headers));
 
+    productData.forEach(rowData => {
+        tableBodyElement.appendChild(createTableRow(rowData));
+    })
+    
     tableElement.appendChild(tableHeadElement);
+    tableElement.appendChild(tableBodyElement);
 
     return tableElement;
 };
 
 const createHeaderRow = columnNames => {
     const tr = document.createElement('tr');
+
     columnNames.forEach( columnName => {
         const th = document.createElement('th');
         th.textContent = columnName[0].toUpperCase() + columnName.slice(1);
 
         const searchUp = document.createElement('span');
         searchUp.textContent = '🔼';
+        
         const searchDown = document.createElement('span');
         searchDown.textContent = '🔽';
+
+        searchUp.onclick = () => sortTableBy(columnName, 'ASC');
+        searchDown.onclick = () => sortTableBy(columnName, 'DESC');
 
         th.appendChild(searchDown);
         th.appendChild(searchUp);
@@ -95,6 +105,26 @@ const createHeaderRow = columnNames => {
     });
 
     return tr;
+}
+
+const createTableRow = product => {
+    
+    const tr = document.createElement('tr');
+
+    Object.values(product).forEach(value => {
+        const td = document.createElement('td');
+        td.textContent = value;
+        tr.appendChild(td);
+    });
+    
+    return tr;
+}
+
+const sortTableBy = (columnName, direction) => {
+    const sortASCData = [...data.sort((a, b) => a[columnName] > b[columnName] ? 1 : -1)];
+    const sortDESCData = [...data.sort((a, b) => a[columnName] < b[columnName] ? 1 : -1)];
+
+    renderTable( direction === 'ASC' ? sortASCData : sortDESCData );
 }
 
 const renderTable = productData => {
